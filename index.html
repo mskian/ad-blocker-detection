@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c7ecee">
+<link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABqklEQVQ4jZ2Tv0scURDHP7P7SGWh14mkuXJZEH8cgqUWcklAsLBbCEEJSprkD7hD/4BUISHEkMBBiivs5LhCwRQBuWgQji2vT7NeYeF7GxwLd7nl4knMwMDMfL8z876P94TMLt+8D0U0EggQSsAjwMvga8ChJAqxqjTG3m53AQTg4tXHDRH9ABj+zf6oytbEu5d78nvzcyiivx7QXBwy46XOi5z1jbM+Be+nqVfP8yzuD3FM6rzIs9YE1hqGvDf15cVunmdx7w5eYJw1pcGptC9CD4gBUuef5Ujq/BhAlTLIeFYuyfmTZgeYv+2nPt1a371P+Hm1WUPYydKf0lnePwVmh3hnlcO1uc7yvgJUDtdG8oy98kduK2KjeHI0fzCQINSXOk/vlXBUOaihAwnGWd8V5r1uhe1VIK52V6JW2D4FqHZX5lphuwEE7ooyaN7gjLMmKSwYL+pMnV+MA/6+g8RYa2Lg2RBQbj4+rll7uymLy3coiuXb5PdQVf7rKYvojAB8Lf3YUJUHfSYR3XqeLO5JXvk0dhKqSqQQoCO+s5AIxCLa2Lxc6ALcAPwS26XFskWbAAAAAElFTkSuQmCC" />
+
+
+<title>Ad Blocker Detection</title>
+<meta name="description" content="Check the Adblock Status on your Web and Mobile Browser."/>
+
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+<style>
+    html, body {
+        background-color: #FDA7DF;
+        padding-bottom: 20px;
+    }
+    body {
+        font-family: "Roboto Mono", monospace;
+        font-weight: 600;
+        word-wrap: break-word;
+       -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-font-smoothing: antialiased !important;
+       text-rendering: optimizelegibility !important;
+    }
+    .modal-content {
+        max-width: 400px;
+        margin: auto;
+    }
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+</head>
+<body>
+
+<script>
+    // URLs to check for ad blockers
+    const adUrls = [
+        "https://static.cloudflareinsights.com/beacon.min.js",
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        "https://ssl.google-analytics.com",
+        "https://pagead2.googleadservices.com",
+        "https://stats.g.doubleclick.net",
+        "https://stats.wp.com",
+        "https://static.media.net"
+    ];
+
+    // Function to create adblock warning modal
+    function createAdblockModal(message, detected) {
+        // Create modal container
+        var modalContainer = document.createElement('div');
+        modalContainer.classList.add('modal', 'is-active');
+
+        // Create modal background
+        var modalBackground = document.createElement('div');
+        modalBackground.classList.add('modal-background');
+
+        // Create modal content
+        var modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+
+        // Determine modal box color and text color based on adblock detection
+        var boxColorClass = detected ? 'has-background-danger' : 'has-background-warning';
+        var textColorClass = detected ? 'has-text-white' : 'has-text-black';
+
+        modalContent.innerHTML = `
+            <div class="box ${boxColorClass} has-text-centered">
+                <h1 class="subtitle ${textColorClass}">${message}</h1>
+            </div>
+        `;
+
+        // Append modal background and content to container
+        modalContainer.appendChild(modalBackground);
+        modalContainer.appendChild(modalContent);
+
+        // Append modal container to body
+        document.body.appendChild(modalContainer);
+    }
+
+    // Function to check for ad blockers
+    async function adBlocker() {
+        try {
+            // Call each URL
+            for (const url of adUrls) {
+                const response = await fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors'
+                });
+
+                if (response.ok) {
+                    createAdblockModal("Adblocker Detected", true);
+                    return;
+                }
+            }
+            // If all requests succeed, no ad blocker detected
+            createAdblockModal("Adblocker Not Detected", false);
+        } catch (error) {
+            // Error occurred during ad blocker detection
+            createAdblockModal("Adblocker Detected", true);
+        }
+    }
+
+    // Call the adBlocker function when the page loads
+    document.addEventListener("DOMContentLoaded", adBlocker);
+</script>
+
+</body>
+</html>
