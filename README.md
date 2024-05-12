@@ -3,6 +3,7 @@
 Check the Adblock Status on your Web and Mobile Browser.
 
 - **Test: <https://mskian.github.io/ad-blocker-detection/>**
+- **DNS Resolver: <https://mskian.github.io/ad-blocker-detection/dns>**
 
 ## Automation
 
