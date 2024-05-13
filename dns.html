@@ -68,35 +68,24 @@ body {
   font-weight: 700;
   font-size: 15px;
 }
-
 /* Styles for table headers */
 .table-wrapper th {
   background-color: #f2f2f2;
   border: 1px solid #dddddd;
-  padding: 8px;
-  text-align: left;
 }
-
-/* Styles for table cells */
-.table-wrapper td {
-  border: 1px solid #dddddd;
-  padding: 8px;
-  text-align: left;
-}
-
-/* Media query for smaller screens (e.g., mobile devices) */
-@media screen and (max-width: 600px) {
-  /* Modify table layout for smaller screens */
-  .table-wrapper table {
-      width: 100%; /* Ensure table occupies full width of viewport */
+.read-more {
+    font-weight: 600;
+    font-size: 14px;
+    font-family: "Roboto Mono", monospace;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 32px;
+    padding: 20px;
+    -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased !important;
+   -moz-font-smoothing: antialiased !important;
+   text-rendering: optimizelegibility !important;
   }
-  .table-wrapper th,
-  .table-wrapper td {
-      padding: 4px; /* Decrease padding for smaller screens */
-      font-size: 15px; /* Decrease font size for smaller screens */
-      font-weight: 700;
-  }
-}
 </style>
 
 </head>
@@ -109,13 +98,13 @@ body {
                     <br>
                     <div class="table-container table-wrapper">
                         <table id="resolver-table" class="table is-fullwidth is-hoverable">
-                          
+                          <thead>
                                 <tr>
                                     <th>DNS and Domain</th>
                                     <th>Loading Time</th>
                                     <th>Connection Speed</th>
                                 </tr>
-                            
+                          </thead>
                             <tbody>
                             </tbody>
                         </table>
@@ -126,6 +115,10 @@ body {
                     <span class="loader"></span>
                 </div>
                 <br>
+            </div>
+            <br>
+            <div class="buttons is-centered">
+            <button id="refresh-button" class="button is-warning  read-more">Refresh</button>
             </div>
         </div>
     </section>

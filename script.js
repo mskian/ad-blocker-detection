@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const resolverTable = document.getElementById('resolver-table').getElementsByTagName('tbody')[0];
     const loadingIndicator = document.getElementById('loading-indicator');
+    const refreshButton = document.getElementById('refresh-button');
 
     // Array of public DNS resolvers
     const resolvers = [
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Populate the table with resolver data
 async function populateTable() {
     loadingIndicator.style.display = 'block';
+    resolverTable.innerHTML = '';
     for (const resolver of resolvers) {
         const results = await measureLoadingTimeAndSpeed(testUrls);
         let lastIpAddress = null; // Reset last IP address for each resolver
@@ -87,6 +89,10 @@ async function populateTable() {
     }
     loadingIndicator.style.display = 'none';
 }
+
+refreshButton.addEventListener('click', async () => {
+    await populateTable();
+});
 
     populateTable();
 
